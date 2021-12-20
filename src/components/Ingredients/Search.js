@@ -9,7 +9,7 @@ const Search = React.memo(props => {
   const inputRef = useRef();
 
   useEffect(() => {
-    setTimeout(() => {
+    const timer = setTimeout(() => {
       if (enteredFilter === inputRef.current.value){
         const query = enteredFilter.length === 0 ? '' : `?orderBy="title"&equalTo="${enteredFilter}"`;
         fetch('https://react-hooks-ingredients-882ad-default-rtdb.europe-west1.firebasedatabase.app/ingredients.json' + query).then(
@@ -26,7 +26,10 @@ const Search = React.memo(props => {
           onLoadIngredients(loadedIngredients);
           });
       }
-    }, 500); 
+    }, 500);
+    return () => {
+      clearTimeout(timer);
+    }; 
   }, [enteredFilter, onLoadIngredients, inputRef]);
 
   return (
